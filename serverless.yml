@@ -1,4 +1,4 @@
-service: taskDMS
+service: ScheduleTaskDMS
 
 provider:
   name: aws
