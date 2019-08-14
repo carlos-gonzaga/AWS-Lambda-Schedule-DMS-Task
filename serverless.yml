@@ -1,0 +1,33 @@
+service: taskDMS
+
+provider:
+  name: aws
+  runtime: python3.7
+  memorySize: 128
+  timeout: 5
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "arn:aws:logs:*:*:*"
+    - Effect: Allow
+      Action: 
+        - dms:StartReplicationTask
+      Resource: '*'
+
+functions:
+  StartDMSTask:
+    name: ${opt:stage}-Start-DMS-Task
+    description: 'Start Database Migration Service Task'
+    handler: src/DMSStartTask.lambda_handler
+    tags:
+      Name: ${opt:stage}-Start-DMS-Task
+    events: # Set Schedule to run task
+      - schedule:
+          rate: cron(0 12 * * ? *)
+          enabled: true
+          input:
+            Client01: "arn:aws:dms:us-east-1:000000000000:task:XXXXXXXXXXXXXXXXXXXXXXXXXX" # Migration Task ARN
+            Client02: "arn:aws:dms:us-east-1:000000000000:task:YYYYYYYYYYYYYYYYYYYYYYYYYY" # Multiple Tasks
