@@ -1,4 +1,4 @@
-# Schedule-DMS-Task
+# AWS-Lambda-Schedule-DMS-Task
 
 Cria um agendamento do Cloudwatch, o qual chama o Lambda passando a ARN da Migration Task existente no DMS.
 
